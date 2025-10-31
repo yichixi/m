@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>Loooooove</title>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background-color: #f3f3f3;
+  }
+
+  .popup {
+    position: fixed;
+    width: 240px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
+    overflow: hidden;
+    opacity: 0.95;
+    font-family: "Microsoft YaHei", sans-serif;
+    animation: fadeIn 0.4s ease;
+  }
+
+  /* 标题栏（上方白色条） */
+  .popup .titlebar {
+    background-color: #fff;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+    padding: 0 5px;
+    cursor: move;
+  }
+
+  .popup .titlebar .title {
+    color: #333;
+    font-size: 13px;
+    font-weight: bold;
+  }
+
+  /* 右上角按钮组 */
+  .popup .titlebar .window-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .window-buttons span {
+    width: 16px;
+    height: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 2px;
+    font-size: 14px;
+    transition: background-color 0.2s;
+  }
+
+  .window-buttons span:hover {
+    background-color: #e0e0e0;
+  }
+
+  .window-buttons .close:hover {
+    background-color: #e81123;
+    color: white;
+  }
+
+  /* 内容部分 */
+  .popup .content {
+    padding: 20px 15px;
+    color: white;
+    font-size: 24px;
+    text-align: center;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0; transform: scale(0.8);}
+    to {opacity: 1; transform: scale(1);}
+  }
+</style>
+</head>
+<body>
+
+<script>
+  const messages = [
+    "林静如天天开心！",
+    "林静如要多穿衣服！",
+    "林静如记得多喝水",
+    "林静如要更自信！",
+    "早点休息哦",
+    "宝宝你很棒！",
+    "加油！",
+    "林静如我爱你",
+  ];
+
+  function randomColor() {
+    return `hsl(${Math.random() * 360}, 100%, 65%)`;
+  }
+
+  function randomPosition() {
+    return {
+      x: Math.random() * (window.innerWidth - 250),
+      y: Math.random() * (window.innerHeight - 150)
+    };
+  }
+
+  let count = 0;
+  const maxPopups = 150; // 控制弹窗数量
+
+  function createPopup() {
+    if (count >= maxPopups) return;
+
+    const popup = document.createElement("div");
+    popup.className = "popup";
+    const color = randomColor();
+    const pos = randomPosition();
+    popup.style.left = pos.x + "px";
+    popup.style.top = pos.y + "px";
+
+    // 标题栏
+    const titleBar = document.createElement("div");
+    titleBar.className = "titlebar";
+
+    const title = document.createElement("div");
+    title.className = "title";
+    title.textContent = "提示";
+
+    const buttons = document.createElement("div");
+    buttons.className = "window-buttons";
+
+    const minimize = document.createElement("span");
+    minimize.textContent = "-";
+
+    const maximize = document.createElement("span");
+    maximize.textContent = "□";
+
+    const close = document.createElement("span");
+    close.textContent = "×";
+    close.className = "close";
+    close.onclick = () => {
+      popup.style.opacity = "0";
+      popup.style.transform = "scale(0.9)";
+      setTimeout(() => popup.remove(), 300);
+    };
+
+    buttons.appendChild(minimize);
+    buttons.appendChild(maximize);
+    buttons.appendChild(close);
+
+    titleBar.appendChild(title);
+    titleBar.appendChild(buttons);
+
+    // 内容部分
+    const content = document.createElement("div");
+    content.className = "content";
+    content.style.backgroundColor = color;
+    content.textContent = messages[Math.floor(Math.random() * messages.length)];
+
+    popup.appendChild(titleBar);
+    popup.appendChild(content);
+    document.body.appendChild(popup);
+
+    count++;
+    setTimeout(createPopup, 200);
+  }
+
+  createPopup();
+</script>
+
+</body>
+</html>
